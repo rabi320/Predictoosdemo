@@ -1,9 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# Display the image
-st.image("predictoos_logo.png", use_column_width=True)
-
+st.markdown("![](https://www.diplomat-global.com/wp-content/uploads/2018/06/logo.png)")
 # Set the title of the app
 st.title('Predictoos AI Hub')
 
