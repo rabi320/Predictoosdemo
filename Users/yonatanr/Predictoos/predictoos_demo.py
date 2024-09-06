@@ -15,3 +15,12 @@ if uploaded_file is not None:
     # Display the first 5 rows of the DataFrame
     st.write("Here are the first 5 rows of the uploaded CSV:")
     st.dataframe(df.head())
+
+
+    # Allow users to select which columns to display
+    columns = st.multiselect("Select columns to display", options=df.columns.tolist(), default=df.columns.tolist())
+
+    # Show the selected columns
+    if columns:
+        st.write("Here are the selected columns:")
+        st.dataframe(df[columns])
