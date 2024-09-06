@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+# Display the image
+st.image("predictoos_logo.png", use_column_width=True)
+
 # Set the title of the app
 st.title('Predictoos AI Hub')
 
