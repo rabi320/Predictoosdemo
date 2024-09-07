@@ -5,7 +5,7 @@ import pandas as pd
 st.markdown("![](https://www.diplomat-global.com/wp-content/uploads/2018/06/logo.png)")
 
 # Set the title of the app
-st.title('predictoos ai hub')
+st.title('Predictoos AI Hub')
 
 # File uploader for CSV files
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
@@ -18,27 +18,41 @@ if uploaded_file is not None:
     st.write("Here are the first 5 rows of the uploaded CSV:")
     st.dataframe(df.head())
 
-    # Suggest "Date" and "Sales" columns
+    # Suggest "date" and "sales" columns
     date_candidate = next((col for col in df.columns if "date" in col.lower()), None)
     sales_candidate = next((col for col in df.columns if "sales" in col.lower()), None)
 
     # Allow the user to select the date column
-    date_column = st.selectbox("Select the Date column", options=df.columns.tolist(), index=df.columns.tolist().index(date_candidate) if date_candidate else 0)
+    date_column = st.selectbox("Select the date column", options=df.columns.tolist(), index=df.columns.tolist().index(date_candidate) if date_candidate else 0)
 
     # Allow the user to select the sales column with a default suggestion
-    sales_column = st.selectbox("Select the Sales column", options=df.columns.tolist(), index=df.columns.tolist().index(sales_candidate) if sales_candidate else 0)
+    sales_column = st.selectbox("Select the sales column", options=df.columns.tolist(), index=df.columns.tolist().index(sales_candidate) if sales_candidate else 0)
 
     # Display the selected columns for confirmation
-    st.write(f"Selected Date Column: {date_column}")
-    st.write(f"Selected Sales Column: {sales_column}")
+    st.write(f"Selected date column: {date_column}")
+    st.write(f"Selected sales column: {sales_column}")
 
     # Save the confirmed selections
-    if st.button("Confirm Selections"):
+    if st.button("Confirm selections"):
         st.session_state.selected_date_column = date_column
         st.session_state.selected_sales_column = sales_column
         st.success("Selections saved!")
 
     # Display the selected columns alongside the original
     if 'selected_date_column' in st.session_state and 'selected_sales_column' in st.session_state:
+        selected_df = df[[st.session_state.selected_date_column, st.session_state.selected_sales_column]]
         st.write("Here are the date and sales columns from the uploaded CSV:")
-        st.dataframe(df[[st.session_state.selected_date_column, st.session_state.selected_sales_column]])
+        st.dataframe(selected_df)
+
+        # Function to convert DataFrame to CSV in memory
+        def convert_df_to_csv(df):
+            return df.to_csv(index=False).encode('utf-8')
+
+        # Create a download button for the selected DataFrame
+        csv = convert_df_to_csv(selected_df)
+        st.download_button(
+            label="Download Selected Data as CSV",
+            data=csv,
+            file_name='selected_data.csv',
+            mime='text/csv'
+        )
