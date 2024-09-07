@@ -46,8 +46,8 @@ if uploaded_file is not None:
     # Display the selected columns alongside the original
     if 'selected_date_column' in st.session_state and 'selected_sales_column' in st.session_state:
         selected_df = df[[st.session_state.selected_date_column, st.session_state.selected_sales_column]]
-        st.write("Here are the date and sales columns from the uploaded CSV:")
-        st.dataframe(selected_df)
+        st.write("Here is a sample of your demand forecast:")
+        st.dataframe(selected_df.head(10))
 
         # Function to convert DataFrame to CSV in memory
         def convert_df_to_csv(df):
@@ -56,7 +56,7 @@ if uploaded_file is not None:
         # Create a download button for the selected DataFrame
         csv = convert_df_to_csv(selected_df)
         st.download_button(
-            label="Download forecast",
+            label="Download full forecast",
             data=csv,
             file_name='forecast.csv',
             mime='text/csv'
