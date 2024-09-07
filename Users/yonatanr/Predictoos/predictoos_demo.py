@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time 
 
 # Display the logo
 st.markdown("![](https://www.diplomat-global.com/wp-content/uploads/2018/06/logo.png)")
@@ -34,6 +35,10 @@ if uploaded_file is not None:
 
     # Save the confirmed selections
     if st.button("Confirm selections"):
+        # Add a loading spinner with a delay
+        with st.spinner('Calculating predictions...'):
+            time.sleep(5)  # Wait for 5 seconds
+            
         st.session_state.selected_date_column = date_column
         st.session_state.selected_sales_column = sales_column
         st.success("Selections saved!")
@@ -51,8 +56,8 @@ if uploaded_file is not None:
         # Create a download button for the selected DataFrame
         csv = convert_df_to_csv(selected_df)
         st.download_button(
-            label="Download Selected Data as CSV",
+            label="Download forecast",
             data=csv,
-            file_name='selected_data.csv',
+            file_name='forecast.csv',
             mime='text/csv'
         )
